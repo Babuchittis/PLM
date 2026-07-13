@@ -1,0 +1,6 @@
+Partner_Id,ID,Name_org,Country,Partner_status,Partner_level,createdAt,createdBy,modifiedAt,modifiedBy
+P10001,1,TechNova Solutions,India,Active,Gold,2026-01-05T09:15:00Z,ADMIN,2026-03-10T11:20:00Z,ADMIN
+P10002,2,GlobalSoft Inc,United States,Active,Silver,2026-01-10T10:30:00Z,ADMIN,2026-04-12T15:45:00Z,SYSTEM
+P10003,3,BlueSky Technologies,United Kingdom,Inactive,Bronze,2026-02-02T08:00:00Z,ADMIN,2026-05-18T09:10:00Z,ADMIN
+P10004,4,NextGen Systems,Germany,Active,Platinum,2026-02-15T14:20:00Z,SYSTEM,2026-06-01T10:00:00Z,SYSTEM
+P10005,5,Sunrise Infotech,India,Pending,Silver,2026-02-28T12:10:00Z,ADMIN,2026-03-15T16:30:00Z,ADMIN
