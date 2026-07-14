@@ -16,7 +16,7 @@ entity Partner:cuid, managed {
       Contacts       : Composition of many Contact    on Contacts.Partner_Id    = $self.Partner_Id;
 }
 
-entity Membership {
+entity Membership :cuid, managed{
   key Partner_Id       : String(10);
   key Membership_id    : String(10);
   key valid_to         : Date;
@@ -30,7 +30,7 @@ entity Membership {
       partner          : Association to Partner            on partner.Partner_Id          = $self.Partner_Id;
 }
 
-entity Contact {
+entity Contact :cuid, managed{
   key Partner_Id  : String(10);
   key Contact_Id  : String(10);
       First_Name  : String(40);

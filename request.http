@@ -1,0 +1,47 @@
+@service=http://localhost:4004/odata/v4/partner-services
+
+###Post new partner
+POST {{service}}/partner
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Partner_Id": "P000000002",
+  "Name_org": "ABC Technologies",
+  "Country": "IND",
+  "Partner_status": "ACT",
+  "Partner_level": "Gold",
+
+  "Memberships": [
+    {
+      "Partner_Id": "P000000002",
+      "Membership_id": "M000000001",
+      "valid_to": "2027-12-31",
+      "Valid_from": "2026-01-01",
+      "Partner_Type": "Vendor",
+      "PT_Status": "Active",
+      "PT_Status_Reason": "Approved"
+    }
+  ],
+
+  "Contacts": [
+    {
+      "Partner_Id": "P000000002",
+      "Contact_Id": "C000000001",
+      "First_Name": "John",
+      "Last_Name": "David",
+      "Email": "john.david@abctech.com",
+      "Function": "Manager",
+      "Department": "Sales",
+      "Comm_lang": "EN",
+      "Role": "Primary Contact"
+    }
+  ]
+}
+###Get partners
+
+GET {{service}}/partner
+
+###Get partner, membership,contacts
+
+GET {{service}}/partner?$expand=Memberships,Contacts
