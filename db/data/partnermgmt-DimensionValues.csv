@@ -1,1 +1,37 @@
 Dim_Id,Dim_text
+YBAC,Build Authorization-Cloud
+YBAIC,Build Authorization-Integrate
+YBAP,Build Authorization-On-premise
+YEDCA,Channel - Agent
+YEDCR,Channel - Reseller
+YCOIL,COIL Participant
+YEDCT,Content
+YCLCP,Customer Relationship Management
+YEDDV,Delivery
+YDBLD,Delos Build Authorization
+YSELL,Delos Sell Authorization
+YDSER,Delos Service Authorization
+YEDUV,Education University
+YODP,Human Capital Management
+YICC,ICC Vendor
+YCLGP,Open Cloud
+YOOP,Open on-premise
+YRAC,Run Authorization-Cloud
+YRAP,Run Authorization-On Prem
+YCB1R,Run Authorization-SAP Business One Cloud
+YRC,Run Customer
+YA1F,SAP AiO Product Focus
+YB1V,SAP Business One
+YCB1S,SAP Business One Cloud
+YPACL,SAP Cloud AppDev Build Authorization
+YCSHV,SAP Cloud ERP
+YCHPS,SAP Cloud ERP Private
+YSOEB,SAP OE Build Authorization
+YSUP,Sell Authorization-Mobile Solutions
+YCLSP,Spend Management
+YDVDS,Support Authorization-Database and Data Management
+YSVDS,Support Authorization-Mobile Solutions
+YJVDS,Support Authorization-SAP Analytics
+YAVDS,Support Authorization-SAP BAiO
+YCVDS,Support Authorization-SAP Commerce
+YHVDS,Support Authorization-SAP HANA

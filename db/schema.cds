@@ -8,8 +8,8 @@ using { cuid, managed } from '@sap/cds/common';
 entity Partner:cuid, managed {
   key Partner_Id     : String(10);
       Name_org       : String(50);
-      Country        : String(3);
-      Partner_status : String(5);
+      Country        : String(30);
+      Partner_status : String(20);
       Partner_level  : String(20);
       // associations
       Memberships    : Composition of many Membership on Memberships.Partner_Id = $self.Partner_Id;
