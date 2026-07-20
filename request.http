@@ -6,7 +6,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "Partner_Id": "P000000002",
+  "Partner_Id": "",
   "Name_org": "ABC Technologies",
   "Country": "IND",
   "Partner_status": "ACT",
@@ -14,7 +14,7 @@ Accept: application/json
 
   "Memberships": [
     {
-      "Partner_Id": "P000000002",
+      "Partner_Id": "",
       "Membership_id": "M000000001",
       "valid_to": "2027-12-31",
       "Valid_from": "2026-01-01",
@@ -26,7 +26,7 @@ Accept: application/json
 
   "Contacts": [
     {
-      "Partner_Id": "P000000002",
+      "Partner_Id": "",
       "Contact_Id": "C000000001",
       "First_Name": "John",
       "Last_Name": "David",

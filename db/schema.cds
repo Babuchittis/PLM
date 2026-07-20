@@ -1,22 +1,27 @@
 namespace partnermgmt;
 
-using { cuid, managed } from '@sap/cds/common';
+using {
+  cuid,
+  managed
+} from '@sap/cds/common';
 
 
 // ─── Core entities ────────────────────────────────────────────────────────────
 
-entity Partner:cuid, managed {
+entity Partner : cuid, managed {
   key Partner_Id     : String(10);
       Name_org       : String(50);
       Country        : String(30);
       Partner_status : String(20);
       Partner_level  : String(20);
       // associations
-      Memberships    : Composition of many Membership on Memberships.Partner_Id = $self.Partner_Id;
-      Contacts       : Composition of many Contact    on Contacts.Partner_Id    = $self.Partner_Id;
+      Memberships    : Composition of many Membership
+                         on Memberships.Partner_Id = $self.Partner_Id;
+      Contacts       : Composition of many Contact
+                         on Contacts.Partner_Id = $self.Partner_Id;
 }
 
-entity Membership :cuid, managed{
+entity Membership : cuid, managed {
   key Partner_Id       : String(10);
   key Membership_id    : String(10);
   key valid_to         : Date;
@@ -25,23 +30,32 @@ entity Membership :cuid, managed{
       PT_Status        : String(10);
       PT_Status_Reason : String(50);
       // associations
-      Dimensions       : Composition of many Dimension    on Dimensions.Membership_id    = $self.Membership_id;
-      Descriptors      : Composition of many PartDescriptor on Descriptors.Membership_id = $self.Membership_id;
-      partner          : Association to Partner            on partner.Partner_Id          = $self.Partner_Id;
+      Dimensions       : Composition of many Dimension
+                           on Dimensions.Membership_id = $self.Membership_id;
+      Descriptors      : Composition of many PartDescriptor
+                           on Descriptors.Membership_id = $self.Membership_id;
+      partner          : Association to Partner
+                           on partner.Partner_Id = $self.Partner_Id;
 }
 
-entity Contact :cuid, managed{
-  key Partner_Id  : String(10);
-  key Contact_Id  : String(10);
-      First_Name  : String(40);
-      Last_Name   : String(40);
-      Email       : String(80) @assert.unique;
-      Function    : String(40);
-      Department  : String(40);
-      Comm_lang   : String(2);
+entity Contact : cuid, managed {
+  key Partner_Id : String(10);
+  key Contact_Id : String(10);
+
+      @assert.format: '^[A-Za-z ]+$'
+      First_Name : String(40);
+
+      @assert.format: '^[A-Za-z ]+$'
+      Last_Name  : String(40);     
+      
+      Email      : String(80) @assert.unique @assert.required @assert.format: '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$';
+      Function   : String(40);
+      Department : String(40);
+      Comm_lang  : String(2);
       // Role is the combination of Partner + Contact (stored as virtual label)
-      Role        : String(50);
-      partner     : Association to Partner on partner.Partner_Id = $self.Partner_Id;
+      Role       : String(50);
+      partner    : Association to Partner
+                     on partner.Partner_Id = $self.Partner_Id;
 }
 
 entity Dimension {
@@ -66,27 +80,27 @@ entity PartDescriptor {
 
 entity PartnerStatusValues {
   key Partner_status : String(5);
-      status_text    : String(30);
+      status_text    : String(50);
 }
 
 entity PartnerTypes {
   key Partner_type      : String(10);
-      Partner_type_text : String(30);
+      Partner_type_text : String(50);
 }
 
 entity PTStatusValues {
   key PT_Status   : String(5);
-      status_text : String(30);
+      status_text : String(50);
 }
 
 entity DimensionValues {
   key Dim_Id   : String(10);
-      Dim_text : String(30);
+      Dim_text : String(50);
 }
 
 entity DimStatusValues {
   key Dim_Status      : String(5);
-      Dim_status_text : String(30);
+      Dim_status_text : String(50);
 }
 
 entity DescriptorValues {
