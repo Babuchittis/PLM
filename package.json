@@ -19,6 +19,14 @@
       "[production]": {
         "auth": "xsuaa"
       }
+    },
+    "i18n": {
+      "default_language": "en",
+      "languages": [
+        "en",
+        "de",
+        "fr"
+      ]
     }
   }
 }

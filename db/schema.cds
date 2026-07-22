@@ -2,7 +2,8 @@ namespace partnermgmt;
 
 using {
   cuid,
-  managed
+  managed,
+  localized
 } from '@sap/cds/common';
 
 
@@ -11,7 +12,7 @@ using {
 entity Partner : cuid, managed {
   key Partner_Id     : String(10);
       Name_org       : String(50);
-      Country        : String(30);
+      Country        :  localized String(30);
       Partner_status : String(20);
       Partner_level  : String(20);
       // associations
@@ -107,3 +108,5 @@ entity DescriptorValues {
   key Descriptor_ID : String(10);
       Description   : String(50);
 }
+
+// 

@@ -1,4 +1,4 @@
-@service=http://localhost:4004/odata/v4/partner-services
+@service=http://localhost:35703/odata/v4/Partner
 
 ###Post new partner
 POST {{service}}/partner
@@ -41,6 +41,7 @@ Accept: application/json
 ###Get partners
 
 GET {{service}}/partner
+Accept-Language: fr
 
 ###Get partner, membership,contacts
 

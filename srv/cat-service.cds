@@ -1,6 +1,6 @@
 using partnermgmt from '../db/schema';
 
-service partnerServices {
+service partnerServices @(path:'Partner'){
 
   entity partner as projection on partnermgmt.Partner;
   entity membership as projection on partnermgmt.Membership;
