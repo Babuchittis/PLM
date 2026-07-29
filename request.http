@@ -1,4 +1,4 @@
-@service=http://localhost:35703/odata/v4/Partner
+@service=http://localhost:4004/odata/v4/Partner
 
 ###Post new partner
 POST {{service}}/partner
