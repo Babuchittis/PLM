@@ -1,0 +1,90 @@
+<mvc:View
+  controllerName="partner.app.controller.List"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <Page title="Partner Management" class="sapUiResponsiveContentPadding">
+    <headerContent>
+      <Button text="New Partner" type="Emphasized" icon="sap-icon://add" press=".onCreatePress"/>
+    </headerContent>
+    <subHeader>
+      <Toolbar>
+        <SearchField id="searchField" width="320px" placeholder="Search by name, country, status…"
+          search=".onSearch" liveChange=".onSearch"/>
+        <ToolbarSpacer/>
+        <Button text="Delete Selected" type="Reject" icon="sap-icon://delete"
+          press=".onDeleteSelected" enabled="{viewModel>/deleteEnabled}"/>
+      </Toolbar>
+    </subHeader>
+
+    <Table id="partnerTable"
+      growing="true" growingThreshold="20"
+      mode="MultiSelect"
+      selectionChange=".onSelectionChange"
+      updateFinished=".onUpdateFinished"
+      items="{path: '/Partner', parameters: {$count: true, $orderby: 'Partner_Id'}}">
+      <headerToolbar>
+        <Toolbar>
+          <Title text="{viewModel>/tableTitle}"/>
+        </Toolbar>
+      </headerToolbar>
+      <columns>
+        <Column width="7rem"><Text text="Partner ID"/></Column>
+        <Column><Text text="Organization"/></Column>
+        <Column width="5rem" minScreenWidth="Tablet" demandPopin="true"><Text text="Country"/></Column>
+        <Column width="9rem"><Text text="Status"/></Column>
+        <Column width="8rem" minScreenWidth="Tablet" demandPopin="true"><Text text="Level"/></Column>
+        <Column width="6rem" hAlign="End"><Text text="Action"/></Column>
+      </columns>
+      <items>
+        <ColumnListItem type="Active" press=".onItemPress">
+          <cells>
+            <ObjectIdentifier title="{Partner_Id}"/>
+            <Text text="{Name_org}"/>
+            <Text text="{Country}"/>
+            <ObjectStatus text="{status/status_text}" state="{= ${Partner_status} === 'A' ? 'Success' : ${Partner_status} === 'D' ? 'Error' : 'Warning'}"/>
+            <Text text="{Partner_level}"/>
+            <Button icon="sap-icon://edit" type="Transparent" press=".onItemPress" tooltip="Edit"/>
+          </cells>
+        </ColumnListItem>
+      </items>
+    </Table>
+  </Page>
+
+  <mvc:dependents>
+    <Dialog id="createDialog" title="New Partner" contentWidth="420px">
+      <content>
+        <form:SimpleForm editable="true" layout="ResponsiveGridLayout"
+          labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0"
+          columnsL="1" columnsM="1" class="sapUiSmallMargin">
+          <form:content>
+            <Label text="Organization Name" required="true"/>
+            <Input id="newName" placeholder="Enter organization name"/>
+            <Label text="Country (3-char)"/>
+            <Input id="newCountry" maxLength="3" placeholder="e.g. US, DE, GB"/>
+            <Label text="Status"/>
+            <Select id="newStatus">
+              <items>
+                <core:Item key="" text=""/>
+                <core:Item key="P" text="Prospective Partner"/>
+                <core:Item key="D" text="Discontinue"/>
+                <core:Item key="A" text="Active"/>
+              </items>
+            </Select>
+            <Label text="Partner Level"/>
+            <Input id="newLevel" placeholder="e.g. Gold, Silver, Bronze"/>
+          </form:content>
+        </form:SimpleForm>
+      </content>
+      <beginButton>
+        <Button text="Save" type="Emphasized" press=".onSaveCreate"/>
+      </beginButton>
+      <endButton>
+        <Button text="Cancel" press=".onCancelCreate"/>
+      </endButton>
+    </Dialog>
+  </mvc:dependents>
+</mvc:View>

@@ -1,0 +1,71 @@
+{
+  "_version": "1.58.0",
+  "sap.app": {
+    "id": "partner.app",
+    "type": "application",
+    "title": "Partner Management",
+    "applicationVersion": { "version": "1.0.0" },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/partner/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      }
+    }
+  },
+  "sap.ui": { "technology": "UI5" },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "partner.app.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.ui.layout": {}
+      }
+    },
+    "models": {
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "partner.app.i18n.i18n" }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "partner.app.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "bypassed": { "target": "list" }
+      },
+      "routes": [
+        { "name": "list",       "pattern": "",                                                          "target": "list"       },
+        { "name": "detail",     "pattern": "Partner/{partnerId}",                                       "target": "detail"     },
+        { "name": "membership", "pattern": "Partner/{partnerId}/Membership/{membershipId}/{validTo}",   "target": "membership" }
+      ],
+      "targets": {
+        "list":       { "viewName": "List",       "viewLevel": 1 },
+        "detail":     { "viewName": "Detail",     "viewLevel": 2 },
+        "membership": { "viewName": "Membership", "viewLevel": 3 }
+      }
+    }
+  }
+}

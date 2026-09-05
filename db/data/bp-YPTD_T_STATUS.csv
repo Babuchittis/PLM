@@ -1,0 +1,12 @@
+Dim_Status,Dim_status_text
+E0001,Requested
+E0002,Opted out
+E0003,Rejected
+E0004,For evaluation
+E0005,Authorized
+E0006,Authorization at risk
+E0007,De-authorized
+E0008,Candidate
+E0009,Grace Period
+E0011,Evaluation Period Expired
+

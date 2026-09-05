@@ -1,0 +1,6 @@
+Partner_Id,Name_org,Country,Partner_status,Partner_level
+1,Acme Corporation,US,A,Gold
+2,Globex Industries,DE,A,Silver
+3,Initech Solutions,GB,P,Bronze
+4,Umbrella Systems,FR,A,Gold
+5,Soylent Tech,IN,D,Silver

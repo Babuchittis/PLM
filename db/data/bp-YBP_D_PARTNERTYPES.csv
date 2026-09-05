@@ -1,0 +1,6 @@
+Partner_Id,Membership_id,valid_to,Valid_from,Partner_Type,PT_Status,PT_Status_Reason
+1,1,2026-12-31,2024-01-01,YOE,E0005,Initial enrollment
+1,2,2025-12-31,2023-01-01,YVAR,E0009,Expired annual term
+2,3,2026-06-30,2024-06-01,YBLD,E0005,Upgraded from Build tier
+3,4,2026-12-31,2025-01-01,YRUN,E0001,Awaiting approval
+4,5,2027-12-31,2024-01-01,YOE,E0005,Premium tier

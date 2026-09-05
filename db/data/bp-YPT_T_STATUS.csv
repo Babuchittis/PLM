@@ -1,0 +1,10 @@
+PT_Status,status_text
+E0001,Application in Process
+E0002,Application Accepted
+E0003,Rejected
+E0004,Agreement Signed
+E0005,Operational
+E0006,Under Review
+E0007,Notified of Termination
+E0008,In Termination
+E0009,Terminated

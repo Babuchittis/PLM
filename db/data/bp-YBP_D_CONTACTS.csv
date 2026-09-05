@@ -1,0 +1,6 @@
+Partner_Id,Contact_Id,First_Name,Last_Name,Email,Function,Department,Comm_lang
+1,1,John,Smith,john.smith@acme.com,Manager,Sales,EN
+1,2,Jane,Doe,jane.doe@acme.com,Director,Marketing,EN
+2,3,Hans,Müller,hans.mueller@globex.de,Engineer,Technology,DE
+3,4,Emma,Jones,emma.jones@initech.co.uk,Analyst,Finance,EN
+4,5,Marie,Dupont,marie.dupont@umbrella.fr,VP,Operations,FR

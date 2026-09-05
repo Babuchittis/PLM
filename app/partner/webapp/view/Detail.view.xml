@@ -1,0 +1,200 @@
+<mvc:View
+  controllerName="partner.app.controller.Detail"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <Page title="Partner Detail" showNavButton="true" navButtonPress=".onNavBack">
+    <headerContent>
+      <Button text="Edit"   type="Emphasized" icon="sap-icon://edit"   press=".onEditPress"   visible="{viewModel>/viewMode}"/>
+      <Button text="Delete" type="Reject"     icon="sap-icon://delete" press=".onDeletePress" visible="{viewModel>/viewMode}"/>
+      <Button text="Save"   type="Emphasized" icon="sap-icon://save"   press=".onSavePress"   visible="{viewModel>/editMode}"/>
+      <Button text="Cancel"                   icon="sap-icon://cancel" press=".onCancelPress" visible="{viewModel>/editMode}"/>
+    </headerContent>
+
+    <!-- ── Partner Info ──────────────────────────────────────────────────── -->
+    <form:SimpleForm id="partnerForm" editable="{viewModel>/editMode}" layout="ResponsiveGridLayout"
+      title="Partner Information" labelSpanL="3" labelSpanM="4" emptySpanL="5" emptySpanM="4"
+      columnsL="1" columnsM="1" class="sapUiSmallMarginBeginEnd">
+      <form:content>
+        <Label text="Partner ID"/>
+        <Text text="{Partner_Id}"/>
+        <Label text="Organization Name" required="true"/>
+        <Input value="{Name_org}" editable="{viewModel>/editMode}" placeholder="Organization name"/>
+        <Label text="Country"/>
+        <Input value="{Country}" editable="{viewModel>/editMode}" maxLength="3" placeholder="e.g. US, DE, GB"/>
+        <Label text="Status"/>
+        <Select selectedKey="{Partner_status}" enabled="{viewModel>/editMode}">
+          <items>
+            <core:Item key="" text=""/>
+            <core:Item key="P" text="Prospective Partner"/>
+            <core:Item key="D" text="Discontinue"/>
+            <core:Item key="A" text="Active"/>
+          </items>
+        </Select>
+        <Label text="Partner Level"/>
+        <Input value="{Partner_level}" editable="{viewModel>/editMode}" placeholder="e.g. Gold, Silver, Bronze"/>
+      </form:content>
+    </form:SimpleForm>
+
+    <!-- ── Related Data Tabs ─────────────────────────────────────────────── -->
+    <IconTabBar id="tabBar" class="sapUiResponsiveContentPadding" expanded="true">
+      <items>
+
+        <!-- Contacts Tab -->
+        <IconTabFilter text="Contacts" icon="sap-icon://person-placeholder" key="contacts">
+          <VBox>
+            <Toolbar style="Clear">
+              <Button text="Add Contact" type="Emphasized" icon="sap-icon://add" press=".onAddContact"/>
+              <ToolbarSpacer/>
+              <Button text="Delete" type="Reject" icon="sap-icon://delete"
+                press=".onDeleteContacts" enabled="{viewModel>/contactDeleteEnabled}"/>
+            </Toolbar>
+            <Table id="contactsTable" mode="MultiSelect"
+              selectionChange=".onContactSelectionChange"
+              updateFinished=".onContactsUpdated"
+              items="{path: '/Contacts', parameters: {$orderby: 'Contact_Id', $$updateGroupId: 'contactUpdate'}}">
+              <columns>
+                <Column width="7rem"><Text text="Contact ID"/></Column>
+                <Column><Text text="Full Name"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Email"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Function"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Department"/></Column>
+                <Column width="6rem" hAlign="End"><Text text="Action"/></Column>
+              </columns>
+              <items>
+                <ColumnListItem type="Inactive">
+                  <cells>
+                    <ObjectIdentifier title="{Contact_Id}"/>
+                    <Text text="{= ${First_Name} + ' ' + ${Last_Name}}"/>
+                    <Link text="{Email}" href="{= 'mailto:' + ${Email}}"/>
+                    <Text text="{Function}"/>
+                    <Text text="{Department}"/>
+                    <Button icon="sap-icon://edit" type="Transparent" press=".onEditContact" tooltip="Edit Contact"/>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </VBox>
+        </IconTabFilter>
+
+        <!-- Memberships Tab -->
+        <IconTabFilter text="Memberships" icon="sap-icon://group" key="memberships">
+          <VBox>
+            <Toolbar style="Clear">
+              <Button text="Add Membership" type="Emphasized" icon="sap-icon://add" press=".onAddMembership"/>
+              <ToolbarSpacer/>
+              <Button text="Delete" type="Reject" icon="sap-icon://delete"
+                press=".onDeleteMemberships" enabled="{viewModel>/membershipDeleteEnabled}"/>
+            </Toolbar>
+            <Table id="membershipTable" mode="MultiSelect"
+              selectionChange=".onMembershipSelectionChange"
+              updateFinished=".onMembershipsUpdated"
+              items="{path: '/PartnerTypes', parameters: {$orderby: 'Membership_id', $$updateGroupId: 'membershipUpdate'}}">
+              <columns>
+                <Column width="9rem"><Text text="Membership ID"/></Column>
+                <Column width="8rem"><Text text="Type"/></Column>
+                <Column width="8rem"><Text text="Status"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Valid From"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Valid To"/></Column>
+                <Column width="6rem" hAlign="End"><Text text="Action"/></Column>
+              </columns>
+              <items>
+                <ColumnListItem type="Active" press=".onMembershipPress">
+                  <cells>
+                    <ObjectIdentifier title="{Membership_id}"/>
+                    <Text text="{Partner_Type}"/>
+                    <ObjectStatus text="{ptStatus/status_text}" state="{= ${PT_Status} === 'E0005' ? 'Success' : ${PT_Status} === 'E0009' || ${PT_Status} === 'E0007' || ${PT_Status} === 'E0003' ? 'Error' : 'Warning'}"/>
+                    <Text text="{Valid_from}"/>
+                    <Text text="{valid_to}"/>
+                    <Button icon="sap-icon://detail" type="Transparent" press=".onMembershipPress" tooltip="Open Details"/>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </VBox>
+        </IconTabFilter>
+
+      </items>
+    </IconTabBar>
+  </Page>
+
+  <!-- ── Dialogs ──────────────────────────────────────────────────────────── -->
+  <mvc:dependents>
+
+    <!-- Contact Dialog -->
+    <Dialog id="contactDialog" title="{viewModel>/contactDialogTitle}" contentWidth="420px">
+      <content>
+        <form:SimpleForm editable="true" layout="ResponsiveGridLayout"
+          labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0"
+          columnsL="1" columnsM="1" class="sapUiSmallMargin">
+          <form:content>
+            <Label text="First Name" required="true"/>
+            <Input id="cFirst" placeholder="First name"/>
+            <Label text="Last Name"/>
+            <Input id="cLast" placeholder="Last name"/>
+            <Label text="Email"/>
+            <Input id="cEmail" placeholder="Email address" type="Email"/>
+            <Label text="Function"/>
+            <Input id="cFunction" placeholder="Function"/>
+            <Label text="Department"/>
+            <Input id="cDept" placeholder="Department"/>
+            <Label text="Language (2-char)"/>
+            <Input id="cLang" maxLength="2" placeholder="e.g. EN, DE"/>
+          </form:content>
+        </form:SimpleForm>
+      </content>
+      <beginButton><Button text="Save" type="Emphasized" press=".onSaveContact"/></beginButton>
+      <endButton><Button text="Cancel" press=".onCancelContact"/></endButton>
+    </Dialog>
+
+    <!-- Membership Dialog (Create only — editing done on Membership Detail page) -->
+    <Dialog id="membershipDialog" title="Add Membership" contentWidth="420px">
+      <content>
+        <form:SimpleForm editable="true" layout="ResponsiveGridLayout"
+          labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0"
+          columnsL="1" columnsM="1" class="sapUiSmallMargin">
+          <form:content>
+            <Label text="Partner Type" required="true"/>
+            <Select id="mType">
+              <items>
+                <core:Item key="" text=""/>
+                <core:Item key="YOE"   text="Open Ecosystem"/>
+                <core:Item key="YBLD"  text="PE Build"/>
+                <core:Item key="YRUN"  text="PE Run"/>
+                <core:Item key="YVAR"  text="PE Sell"/>
+                <core:Item key="YSRVP" text="PE Service"/>
+              </items>
+            </Select>
+            <Label text="PT Status"/>
+            <Select id="mStatus">
+              <items>
+                <core:Item key="" text=""/>
+                <core:Item key="E0001" text="Application in Process"/>
+                <core:Item key="E0002" text="Application Accepted"/>
+                <core:Item key="E0003" text="Rejected"/>
+                <core:Item key="E0004" text="Agreement Signed"/>
+                <core:Item key="E0005" text="Operational"/>
+                <core:Item key="E0006" text="Under Review"/>
+                <core:Item key="E0007" text="Notified of Termination"/>
+                <core:Item key="E0008" text="In Termination"/>
+                <core:Item key="E0009" text="Terminated"/>
+              </items>
+            </Select>
+            <Label text="Status Reason"/>
+            <Input id="mReason" placeholder="Status reason"/>
+            <Label text="Valid From" required="true"/>
+            <DatePicker id="mFrom" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" placeholder="Select date"/>
+            <Label text="Valid To" required="true"/>
+            <DatePicker id="mTo"   valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" placeholder="Select date"/>
+          </form:content>
+        </form:SimpleForm>
+      </content>
+      <beginButton><Button text="Save" type="Emphasized" press=".onSaveMembership"/></beginButton>
+      <endButton><Button text="Cancel" press=".onCancelMembership"/></endButton>
+    </Dialog>
+
+  </mvc:dependents>
+</mvc:View>

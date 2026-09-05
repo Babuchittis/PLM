@@ -1,0 +1,6 @@
+Membership_id,Dim_id,valid_to,Valid_from,Dim_Status,PT_Status_Reason
+1,YSELL,2026-12-31,2024-01-01,E0005,Standard sales allocation
+1,YDSER,2026-12-31,2024-01-01,E0005,Service tier included
+2,YCLSP,2025-12-31,2023-01-01,E0007,Spend management access expired
+3,YSELL,2026-06-30,2024-06-01,E0005,Build sales access
+4,YEDUV,2026-12-31,2025-01-01,E0001,Education dimension pending

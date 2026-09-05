@@ -1,0 +1,8 @@
+node_modules/
+.cds-dxfp
+*.db
+*.sqlite
+*.sqlite-journal
+.env
+dist/
+gen/

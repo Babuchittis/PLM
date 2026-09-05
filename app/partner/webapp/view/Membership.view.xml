@@ -1,0 +1,231 @@
+<mvc:View
+  controllerName="partner.app.controller.Membership"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <Page id="membershipPage" title="Membership Detail" showNavButton="true" navButtonPress=".onNavBack">
+    <headerContent>
+      <Button text="Edit"   type="Emphasized" icon="sap-icon://edit"   press=".onEditPress"   visible="{viewModel>/viewMode}"/>
+      <Button text="Delete" type="Reject"     icon="sap-icon://delete" press=".onDeletePress" visible="{viewModel>/viewMode}"/>
+      <Button text="Save"   type="Emphasized" icon="sap-icon://save"   press=".onSavePress"   visible="{viewModel>/editMode}"/>
+      <Button text="Cancel"                   icon="sap-icon://cancel" press=".onCancelPress" visible="{viewModel>/editMode}"/>
+    </headerContent>
+
+    <!-- ── Partner Context Header ────────────────────────────────────────── -->
+    <ObjectHeader
+      intro="Partner"
+      title="{partner/Name_org}"
+      number="{Partner_Id}"
+      numberUnit="ID"
+      class="sapUiSmallMarginBeginEnd sapUiNoMarginTop"/>
+
+    <!-- ── Membership Info ───────────────────────────────────────────────── -->
+    <form:SimpleForm editable="{viewModel>/editMode}" layout="ResponsiveGridLayout"
+      title="Membership Information"
+      labelSpanL="3" labelSpanM="4" emptySpanL="5" emptySpanM="4"
+      columnsL="1" columnsM="1" class="sapUiSmallMarginBeginEnd">
+      <form:content>
+        <Label text="Membership ID"/>
+        <Text text="{Membership_id}"/>
+        <Label text="Partner ID"/>
+        <Text text="{Partner_Id}"/>
+        <Label text="Partner Type"/>
+        <Select selectedKey="{Partner_Type}" enabled="{viewModel>/editMode}">
+          <items>
+            <core:Item key="" text=""/>
+            <core:Item key="YOE"   text="Open Ecosystem"/>
+            <core:Item key="YBLD"  text="PE Build"/>
+            <core:Item key="YRUN"  text="PE Run"/>
+            <core:Item key="YVAR"  text="PE Sell"/>
+            <core:Item key="YSRVP" text="PE Service"/>
+          </items>
+        </Select>
+        <Label text="PT Status"/>
+        <Select selectedKey="{PT_Status}" enabled="{viewModel>/editMode}">
+          <items>
+            <core:Item key="" text=""/>
+            <core:Item key="E0001" text="Application in Process"/>
+            <core:Item key="E0002" text="Application Accepted"/>
+            <core:Item key="E0003" text="Rejected"/>
+            <core:Item key="E0004" text="Agreement Signed"/>
+            <core:Item key="E0005" text="Operational"/>
+            <core:Item key="E0006" text="Under Review"/>
+            <core:Item key="E0007" text="Notified of Termination"/>
+            <core:Item key="E0008" text="In Termination"/>
+            <core:Item key="E0009" text="Terminated"/>
+          </items>
+        </Select>
+        <Label text="Status Reason"/>
+        <Input value="{PT_Status_Reason}" editable="{viewModel>/editMode}" placeholder="Status reason"/>
+        <Label text="Valid From"/>
+        <Input value="{Valid_from}" editable="{viewModel>/editMode}" placeholder="yyyy-MM-dd"/>
+        <Label text="Valid To (key)"/>
+        <Text text="{valid_to}"/>
+      </form:content>
+    </form:SimpleForm>
+
+    <!-- ── Related Tabs ──────────────────────────────────────────────────── -->
+    <IconTabBar id="tabBar" class="sapUiResponsiveContentPadding" expanded="true">
+      <items>
+
+        <!-- ── Dimensions Tab ── -->
+        <IconTabFilter text="Dimensions" icon="sap-icon://dimension" key="dimensions">
+          <VBox>
+            <Toolbar style="Clear">
+              <Button text="Add Dimension" type="Emphasized" icon="sap-icon://add" press=".onAddDimension"/>
+              <ToolbarSpacer/>
+              <SearchField id="dimSearch" width="220px" placeholder="Search dimensions…"
+                search=".onDimSearch" liveChange=".onDimSearch"/>
+              <ToolbarSpacer/>
+              <Button text="Delete" type="Reject" icon="sap-icon://delete"
+                press=".onDeleteDimensions" enabled="{viewModel>/dimDeleteEnabled}"/>
+            </Toolbar>
+            <Table id="dimTable" mode="MultiSelect"
+              selectionChange=".onDimSelectionChange"
+              updateFinished=".onDimsUpdated"
+              items="{path: '/Dimensions', parameters: {$orderby: 'Dim_id', $$updateGroupId: 'dimUpdate'}}">
+              <columns>
+                <Column width="8rem"><Text text="Dim ID"/></Column>
+                <Column width="9rem"><Text text="Status"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Valid From"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Valid To (key)"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Status Reason"/></Column>
+                <Column width="6rem" hAlign="End"><Text text="Action"/></Column>
+              </columns>
+              <items>
+                <ColumnListItem type="Inactive">
+                  <cells>
+                    <ObjectIdentifier title="{Dim_id}"/>
+                    <ObjectStatus text="{dimStatus/Dim_status_text}"
+                      state="{= ${Dim_Status} === 'E0005' ? 'Success' : ${Dim_Status} === 'E0007' || ${Dim_Status} === 'E0003' || ${Dim_Status} === 'E0011' ? 'Error' : 'Warning'}"/>
+                    <Text text="{Valid_from}"/>
+                    <Text text="{valid_to}"/>
+                    <Text text="{PT_Status_Reason}"/>
+                    <Button icon="sap-icon://edit" type="Transparent" press=".onEditDimension" tooltip="Edit"/>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </VBox>
+        </IconTabFilter>
+
+        <!-- ── Descriptors Tab ── -->
+        <IconTabFilter text="Descriptors" icon="sap-icon://text" key="descriptors">
+          <VBox>
+            <Toolbar style="Clear">
+              <Button text="Add Descriptor" type="Emphasized" icon="sap-icon://add" press=".onAddDescriptor"/>
+              <ToolbarSpacer/>
+              <SearchField id="descSearch" width="220px" placeholder="Search descriptors…"
+                search=".onDescSearch" liveChange=".onDescSearch"/>
+              <ToolbarSpacer/>
+              <Button text="Delete" type="Reject" icon="sap-icon://delete"
+                press=".onDeleteDescriptors" enabled="{viewModel>/descDeleteEnabled}"/>
+            </Toolbar>
+            <Table id="descTable" mode="MultiSelect"
+              selectionChange=".onDescSelectionChange"
+              updateFinished=".onDescsUpdated"
+              items="{path: '/PartnerDesc', parameters: {$orderby: 'Descriptor_ID', $$updateGroupId: 'descUpdate'}}">
+              <columns>
+                <Column width="9rem"><Text text="Descriptor ID"/></Column>
+                <Column><Text text="Description"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Valid From"/></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Valid To (key)"/></Column>
+                <Column width="6rem" hAlign="End"><Text text="Action"/></Column>
+              </columns>
+              <items>
+                <ColumnListItem type="Inactive">
+                  <cells>
+                    <ObjectIdentifier title="{Descriptor_ID}"/>
+                    <Text text="{Description}"/>
+                    <Text text="{Valid_from}"/>
+                    <Text text="{valid_to}"/>
+                    <Button icon="sap-icon://edit" type="Transparent" press=".onEditDescriptor" tooltip="Edit"/>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </VBox>
+        </IconTabFilter>
+
+      </items>
+    </IconTabBar>
+  </Page>
+
+  <!-- ── Dialogs ──────────────────────────────────────────────────────────── -->
+  <mvc:dependents>
+
+    <!-- Dimension Dialog -->
+    <Dialog id="dimDialog" title="{viewModel>/dimDialogTitle}" contentWidth="420px">
+      <content>
+        <form:SimpleForm editable="true" layout="ResponsiveGridLayout"
+          labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0"
+          columnsL="1" columnsM="1" class="sapUiSmallMargin">
+          <form:content>
+            <Label text="Dimension ID" required="true"/>
+            <Select id="dDimId" forceSelection="false" enabled="{viewModel>/dimIdEditable}"
+              items="{path: '/DimCodes'}">
+              <core:Item key="{Dim_Id}" text="{= ${Dim_Id} + '  –  ' + ${Dim_text}}"/>
+            </Select>
+            <Label text="Valid To (key)" required="true"/>
+            <DatePicker id="dValidTo" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy"
+              editable="{viewModel>/dimIdEditable}" placeholder="Select end date"/>
+            <Label text="Valid From"/>
+            <DatePicker id="dValidFrom" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy"
+              placeholder="Select start date"/>
+            <Label text="Dim Status"/>
+            <Select id="dDimStatus">
+              <items>
+                <core:Item key="" text=""/>
+                <core:Item key="E0001" text="Requested"/>
+                <core:Item key="E0002" text="Opted out"/>
+                <core:Item key="E0003" text="Rejected"/>
+                <core:Item key="E0004" text="For evaluation"/>
+                <core:Item key="E0005" text="Authorized"/>
+                <core:Item key="E0006" text="Authorization at risk"/>
+                <core:Item key="E0007" text="De-authorized"/>
+                <core:Item key="E0008" text="Candidate"/>
+                <core:Item key="E0009" text="Grace Period"/>
+                <core:Item key="E0011" text="Evaluation Period Expired"/>
+              </items>
+            </Select>
+            <Label text="Status Reason"/>
+            <Input id="dStatusReason" placeholder="Status reason"/>
+          </form:content>
+        </form:SimpleForm>
+      </content>
+      <beginButton><Button text="Save" type="Emphasized" press=".onSaveDimension"/></beginButton>
+      <endButton><Button text="Cancel" press=".onCancelDimension"/></endButton>
+    </Dialog>
+
+    <!-- Descriptor Dialog -->
+    <Dialog id="descDialog" title="{viewModel>/descDialogTitle}" contentWidth="420px">
+      <content>
+        <form:SimpleForm editable="true" layout="ResponsiveGridLayout"
+          labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0"
+          columnsL="1" columnsM="1" class="sapUiSmallMargin">
+          <form:content>
+            <Label text="Descriptor ID" required="true"/>
+            <Select id="dDescId" forceSelection="false" enabled="{viewModel>/descIdEditable}"
+              items="{path: '/DescriptorTexts'}">
+              <core:Item key="{Descriptor_ID}" text="{= ${Descriptor_ID} + '  –  ' + ${Description}}"/>
+            </Select>
+            <Label text="Valid To (key)" required="true"/>
+            <DatePicker id="dDescValidTo" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy"
+              editable="{viewModel>/descIdEditable}" placeholder="Select end date"/>
+            <Label text="Valid From"/>
+            <DatePicker id="dDescValidFrom" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy"
+              placeholder="Select start date"/>
+            <Label text="Description"/>
+            <TextArea id="dDescription" rows="3" growing="true" placeholder="Enter description"/>
+          </form:content>
+        </form:SimpleForm>
+      </content>
+      <beginButton><Button text="Save" type="Emphasized" press=".onSaveDescriptor"/></beginButton>
+      <endButton><Button text="Cancel" press=".onCancelDescriptor"/></endButton>
+    </Dialog>
+
+  </mvc:dependents>
+</mvc:View>
